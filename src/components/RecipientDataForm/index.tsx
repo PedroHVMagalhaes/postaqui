@@ -4,6 +4,7 @@ import { z } from 'zod';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Wrapper } from './styles';
+import { useNavigate } from 'react-router-dom';
 
 // Definindo o schema de validação usando Zod
 const schema = z.object({
@@ -47,6 +48,7 @@ type FormValues = {
 };
 
 const RecipientDataForm = () => {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -57,6 +59,7 @@ const RecipientDataForm = () => {
 
   const onSubmit = (data: FormValues) => {
     console.log(data);
+    navigate('/pacote');
   };
 
   return (
