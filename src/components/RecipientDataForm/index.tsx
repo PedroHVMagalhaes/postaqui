@@ -4,7 +4,9 @@ import { z } from 'zod';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Wrapper } from './styles';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { dadosOrigem, dadosOrigemRecipient } from '../../store/store';
 
 // Definindo o schema de validação usando Zod
 const schema = z.object({
@@ -33,7 +35,7 @@ const schema = z.object({
   complemento: z.string().optional(), // Validação opcional para o campo "complemento"
 });
 
-type FormValues = {
+type FormValuesRecipient = {
   nomeCompleto: string;
   cpf: string;
   telefone: string;
@@ -48,17 +50,21 @@ type FormValues = {
 };
 
 const RecipientDataForm = () => {
+  let [dadosOrigemHook, setDadosOrigemHook] = useAtom(dadosOrigem);
+  let [dadosOrigemHookRecipient, setDadosOrigemHookRecipient] =
+    useAtom(dadosOrigemRecipient);
   const navigate = useNavigate();
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<FormValuesRecipient>({
     resolver: zodResolver(schema), // Utilizando o Zod para resolver a validação
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = (data: FormValuesRecipient) => {
     console.log(data);
+    setDadosOrigemHookRecipient(data);
     navigate('/pacote');
   };
 
@@ -72,6 +78,7 @@ const RecipientDataForm = () => {
             required
             id="nomeCompleto"
             label="Nome Completo"
+            defaultValue={dadosOrigemHookRecipient?.nomeCompleto || ''}
             error={!!errors.nomeCompleto} // Verificação de erro no campo
             helperText={errors.nomeCompleto?.message}
             {...register('nomeCompleto')} // Registra o campo "nomeCompleto" no formulário
@@ -81,6 +88,7 @@ const RecipientDataForm = () => {
             required
             id="cpf"
             label="CPF"
+            defaultValue={dadosOrigemHookRecipient?.cpf || ''}
             error={!!errors.cpf}
             helperText={errors.cpf?.message}
             {...register('cpf')}
@@ -90,6 +98,7 @@ const RecipientDataForm = () => {
             required
             id="telefone"
             label="Telefone"
+            defaultValue={dadosOrigemHookRecipient?.telefone || ''}
             error={!!errors.telefone}
             helperText={errors.telefone?.message}
             {...register('telefone')}
@@ -99,6 +108,7 @@ const RecipientDataForm = () => {
             required
             id="email"
             label="E-mail"
+            defaultValue={dadosOrigemHookRecipient?.email || ''}
             error={!!errors.email}
             helperText={errors.email?.message}
             {...register('email')}
@@ -110,6 +120,7 @@ const RecipientDataForm = () => {
             required
             id="cep"
             label="CEP"
+            defaultValue={dadosOrigemHookRecipient?.cep || ''}
             error={!!errors.cep}
             helperText={errors.cep?.message}
             {...register('cep')}
@@ -119,6 +130,7 @@ const RecipientDataForm = () => {
             required
             id="estado"
             label="Estado"
+            defaultValue={dadosOrigemHookRecipient?.estado || ''}
             error={!!errors.estado}
             helperText={errors.estado?.message}
             {...register('estado')}
@@ -128,6 +140,7 @@ const RecipientDataForm = () => {
             required
             id="cidade"
             label="Cidade"
+            defaultValue={dadosOrigemHookRecipient?.cidade || ''}
             error={!!errors.cidade}
             helperText={errors.cidade?.message}
             {...register('cidade')}
@@ -137,6 +150,7 @@ const RecipientDataForm = () => {
             required
             id="bairro"
             label="Bairro"
+            defaultValue={dadosOrigemHookRecipient?.bairro || ''}
             error={!!errors.bairro}
             helperText={errors.bairro?.message}
             {...register('bairro')}
@@ -146,6 +160,7 @@ const RecipientDataForm = () => {
             required
             id="rua"
             label="Rua"
+            defaultValue={dadosOrigemHookRecipient?.rua || ''}
             error={!!errors.rua}
             helperText={errors.rua?.message}
             {...register('rua')}
@@ -157,6 +172,7 @@ const RecipientDataForm = () => {
             required
             id="numero"
             label="Número"
+            defaultValue={dadosOrigemHookRecipient?.numero || ''}
             error={!!errors.numero}
             helperText={errors.numero?.message}
             {...register('numero')}
@@ -165,6 +181,7 @@ const RecipientDataForm = () => {
             size="small"
             id="complemento"
             label="Complemento"
+            defaultValue={dadosOrigemHookRecipient?.complemento || ''}
             {...register('complemento')}
           />
         </div>

@@ -8,8 +8,29 @@ import {
   TextField,
 } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { dadosOrigem, dadosOrigemRecipient } from '../../store/store';
+
+interface dadosOrigem {
+  nomeCompleto: string;
+  cpf: string;
+  telefone: string;
+  email: string;
+  cep: string;
+  estado: string;
+  cidade: string;
+  bairro: string;
+  rua: string;
+  numero: number;
+  complemento?: string;
+}
 
 const ShippingPackageForm = () => {
+  let [dadosOrigemHook, setDadosOrigemHook] = useAtom(dadosOrigem);
+  let [dadosOrigemHookRecipient, setDadosOrigemHookRecipient] =
+    useAtom(dadosOrigemRecipient);
+
   return (
     <Wrapper>
       <h2>Dados do pacote de envio</h2>

@@ -5,10 +5,15 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Wrapper } from './styles';
 import { useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { dadosOrigem } from '../../store/store';
 
 // Definindo o schema de validação usando Zod
 const schema = z.object({
-  nomeCompleto: z.string().nonempty('O nome completo é obrigatório.'), // Validação para o campo
+  nomeCompleto: z
+    .string()
+    .nonempty('O nome completo é obrigatório.')
+    .regex(/^[A-Za-z\s]+$/, 'O campo nomeCompleto só pode conter letras.'),
   cpf: z
     .string()
     .nonempty('O CPF é obrigatório.')
@@ -25,12 +30,24 @@ const schema = z.object({
     .string()
     .nonempty('O CEP é obrigatório.')
     .regex(/^\d+$/, 'O CEP deve conter apenas números.'),
-  estado: z.string().nonempty('O estado é obrigatório.'),
-  cidade: z.string().nonempty('A cidade é obrigatória.'),
-  bairro: z.string().nonempty('O bairro é obrigatório.'),
-  rua: z.string().nonempty('A rua é obrigatória.'),
+  estado: z
+    .string()
+    .nonempty('O estado é obrigatório.')
+    .regex(/^[A-Za-z\s]+$/, 'O campo estado só pode conter letras.'),
+  cidade: z
+    .string()
+    .nonempty('A cidade é obrigatória.')
+    .regex(/^[A-Za-z\s]+$/, 'O campo cidade só pode conter letras.'),
+  bairro: z
+    .string()
+    .nonempty('O bairro é obrigatório.')
+    .regex(/^[A-Za-z\s]+$/, 'O campo bairro só pode conter letras.'),
+  rua: z
+    .string()
+    .nonempty('A rua é obrigatória.')
+    .regex(/^[A-Za-z\s]+$/, 'O campo rua só pode conter letras.'),
   numero: z.string().regex(/^\d+$/, 'O número deve conter apenas números.'),
-  complemento: z.string().optional(), // Validação opcional para o campo "complemento"
+  complemento: z.string().optional(),
 });
 
 type FormValues = {
@@ -48,6 +65,7 @@ type FormValues = {
 };
 
 const SenderDataForm = () => {
+  let [dadosOrigemHook, setDadosOrigemHook] = useAtom(dadosOrigem);
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -58,8 +76,9 @@ const SenderDataForm = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
+    setDadosOrigemHook(data);
     navigate('/destino');
+    console.log(dadosOrigemHook);
   };
 
   return (
@@ -72,6 +91,7 @@ const SenderDataForm = () => {
             required
             id="nomeCompleto"
             label="Nome Completo"
+            defaultValue={dadosOrigemHook?.nomeCompleto || ''}
             error={!!errors.nomeCompleto} // Verificação de erro no campo
             helperText={errors.nomeCompleto?.message}
             {...register('nomeCompleto')} // Registra o campo "nomeCompleto" no formulário
@@ -81,6 +101,7 @@ const SenderDataForm = () => {
             required
             id="cpf"
             label="CPF"
+            defaultValue={dadosOrigemHook?.cpf || ''}
             error={!!errors.cpf}
             helperText={errors.cpf?.message}
             {...register('cpf')}
@@ -90,6 +111,7 @@ const SenderDataForm = () => {
             required
             id="telefone"
             label="Telefone"
+            defaultValue={dadosOrigemHook?.telefone || ''}
             error={!!errors.telefone}
             helperText={errors.telefone?.message}
             {...register('telefone')}
@@ -99,6 +121,7 @@ const SenderDataForm = () => {
             required
             id="email"
             label="E-mail"
+            defaultValue={dadosOrigemHook?.email || ''}
             error={!!errors.email}
             helperText={errors.email?.message}
             {...register('email')}
@@ -110,6 +133,7 @@ const SenderDataForm = () => {
             required
             id="cep"
             label="CEP"
+            defaultValue={dadosOrigemHook?.cep || ''}
             error={!!errors.cep}
             helperText={errors.cep?.message}
             {...register('cep')}
@@ -119,6 +143,7 @@ const SenderDataForm = () => {
             required
             id="estado"
             label="Estado"
+            defaultValue={dadosOrigemHook?.estado || ''}
             error={!!errors.estado}
             helperText={errors.estado?.message}
             {...register('estado')}
@@ -128,6 +153,7 @@ const SenderDataForm = () => {
             required
             id="cidade"
             label="Cidade"
+            defaultValue={dadosOrigemHook?.cidade || ''}
             error={!!errors.cidade}
             helperText={errors.cidade?.message}
             {...register('cidade')}
@@ -137,6 +163,7 @@ const SenderDataForm = () => {
             required
             id="bairro"
             label="Bairro"
+            defaultValue={dadosOrigemHook?.bairro || ''}
             error={!!errors.bairro}
             helperText={errors.bairro?.message}
             {...register('bairro')}
@@ -146,6 +173,7 @@ const SenderDataForm = () => {
             required
             id="rua"
             label="Rua"
+            defaultValue={dadosOrigemHook?.rua || ''}
             error={!!errors.rua}
             helperText={errors.rua?.message}
             {...register('rua')}
@@ -157,6 +185,7 @@ const SenderDataForm = () => {
             required
             id="numero"
             label="Número"
+            defaultValue={dadosOrigemHook?.numero || ''}
             error={!!errors.numero}
             helperText={errors.numero?.message}
             {...register('numero')}
@@ -165,6 +194,7 @@ const SenderDataForm = () => {
             size="small"
             id="complemento"
             label="Complemento"
+            defaultValue={dadosOrigemHook?.complemento || ''}
             {...register('complemento')}
           />
         </div>
