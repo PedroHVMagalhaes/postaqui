@@ -1,5 +1,10 @@
 import { atom } from 'jotai';
 
+type Tracking = {
+  id: string;
+  carrier: string;
+}
+
 type FormValues = {
   nomeCompleto: string;
   cpf: string;
@@ -41,6 +46,7 @@ type FormValuesShipping = {
   descriçaoItens: string;
 }
 
+export let tracking = atom<Tracking | null>(null);
 export let dadosOrigem = atom<FormValues | null>(null);
 export let dadosOrigemRecipient = atom<FormValuesRecipient | null>(null);
 export let dadosOrigemShipping = atom<FormValuesShipping >({

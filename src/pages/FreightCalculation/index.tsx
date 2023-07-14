@@ -9,16 +9,22 @@ import {
   dadosOrigem,
   dadosOrigemRecipient,
   dadosOrigemShipping,
+  tracking,
 } from '../../store/store';
 import { useAtom } from 'jotai';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const FreightCalculation = () => {
   const [dadosOrigemHook] = useAtom(dadosOrigem);
   const [dadosOrigemHookRecipient] = useAtom(dadosOrigemRecipient);
   const [dadosOrigemHookShipping] = useAtom(dadosOrigemShipping);
+  const [, setTrackingPackage] = useAtom(tracking);
 
   const [value, setValue] = useState(0);
   const [discount, setDiscount] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     shippingCostCalculation({
@@ -71,17 +77,24 @@ const FreightCalculation = () => {
     }).then((response) => {
       let value = Infinity;
       let discount = 0;
-      console.log(response.data);
+      let id = '';
+      let carrier = '';
 
       response.data.shipment.forEach((item: any) => {
         if (item.price < value) {
           value = item.price;
           discount = item.discount;
+          id = item._id;
+          carrier = item.carrier;
         }
       });
 
       setValue(value);
       setDiscount(discount);
+      setTrackingPackage({
+        carrier,
+        id,
+      });
     });
   }, []);
 
@@ -102,8 +115,18 @@ const FreightCalculation = () => {
         </p>
 
         <h2>Sua economia foi de R${discount}</h2>
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate('/rastreio');
+          }}
+        >
+          Postar
+        </Button>
       </CardFrete>
-      ;
     </Container>
   );
 };

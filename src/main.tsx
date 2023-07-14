@@ -5,6 +5,7 @@ import ShippingPackageData from './pages/ShippingPackageData';
 import Home from './pages/Home';
 import DestinationData from './pages/DestinationData';
 import FreightCalculation from './pages/FreightCalculation';
+import TrackingCode from './pages/TrackingCode';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/pacoteEnvio',
     element: <FreightCalculation />,
+  },
+  {
+    path: '/rastreio',
+    element: <TrackingCode />,
   },
 ]);
 

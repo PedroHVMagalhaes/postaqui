@@ -8,3 +8,7 @@ const api = axios.create({
 export const shippingCostCalculation = (data: ShippingCalculateDTO) => {
   return api.post('shipping_calculate', data)
 }
+
+export const tracking = (carrier: string) => {
+  return api.post(`posting?carrier=${carrier}`)
+}
