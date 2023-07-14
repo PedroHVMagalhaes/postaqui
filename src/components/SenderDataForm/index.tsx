@@ -7,6 +7,7 @@ import { Wrapper } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { dadosOrigem } from '../../store/store';
+import { getCepData } from '../../services/viacep';
 
 // Definindo o schema de validação usando Zod
 const schema = z.object({
@@ -28,7 +29,7 @@ const schema = z.object({
     .nonempty('O e-mail é obrigatório.'),
   cep: z
     .string()
-    .nonempty('O CEP é obrigatório.')
+    .length(8, 'Deve conter 8 dígitos.')
     .regex(/^\d+$/, 'O CEP deve conter apenas números.'),
   estado: z
     .string()
@@ -78,7 +79,26 @@ const SenderDataForm = () => {
   const onSubmit = (data: FormValues) => {
     setDadosOrigemHook(data);
     navigate('/destino');
-    console.log(dadosOrigemHook);
+  };
+
+  const changeCep = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
+  ) => {
+    const { value } = event.target;
+
+    if (value.length !== 8) {
+      return;
+    }
+
+    getCepData(value).then((response) => {
+      setDadosOrigemHook({
+        ...(dadosOrigemHook as any),
+        bairro: response.data.bairro,
+        rua: response.data.logradouro,
+        cidade: response.data.localidade,
+        estado: response.data.uf,
+      });
+    });
   };
 
   return (
@@ -137,13 +157,14 @@ const SenderDataForm = () => {
             error={!!errors.cep}
             helperText={errors.cep?.message}
             {...register('cep')}
-          />
+            onChange={changeCep}
+          ></TextField>
           <TextField
             size="small"
             required
             id="estado"
             label="Estado"
-            defaultValue={dadosOrigemHook?.estado || ''}
+            value={dadosOrigemHook?.estado || ''}
             error={!!errors.estado}
             helperText={errors.estado?.message}
             {...register('estado')}
@@ -153,7 +174,7 @@ const SenderDataForm = () => {
             required
             id="cidade"
             label="Cidade"
-            defaultValue={dadosOrigemHook?.cidade || ''}
+            value={dadosOrigemHook?.cidade || ''}
             error={!!errors.cidade}
             helperText={errors.cidade?.message}
             {...register('cidade')}

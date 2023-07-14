@@ -5,3 +5,9 @@ export const Container = styled.div`
   background-color: #FFCD40;
   height: 100vh;
 `;
+
+export const Wrapper = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin: 4rem;
+`
