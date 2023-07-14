@@ -28,5 +28,29 @@ type FormValuesRecipient = {
   complemento?: string;
 };
 
+type FormValuesShipping = {
+  peso: number;
+  altura: number;
+  largura: number;
+  comprimento: number;
+  logicaReversa: boolean;
+  avisoRecebimento: boolean;
+  maosProprias: boolean;
+  valorMercadoria: number;
+  quantidadeItens: number;
+  descriçaoItens: string;
+}
+
 export let dadosOrigem = atom<FormValues | null>(null);
 export let dadosOrigemRecipient = atom<FormValuesRecipient | null>(null);
+export let dadosOrigemShipping = atom<FormValuesShipping >({
+  peso: 0,
+  altura: 0,
+  largura: 0,
+  comprimento: 0,
+  logicaReversa: false,
+  avisoRecebimento: false,
+  maosProprias: false,
+  valorMercadoria: 0,
+  quantidadeItens: 0,
+  descriçaoItens: ''});

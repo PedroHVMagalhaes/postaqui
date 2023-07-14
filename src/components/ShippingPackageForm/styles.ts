@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
 
   form{
     display: flex;
+    flex-direction: column;
     align-items: center;
     padding: 2rem;
 
@@ -33,4 +34,10 @@ export const SwitchDiv = styled.div`
 display: flex;
 flex-direction: column;
 gap: 2rem;
+`
+export const ContainerForm = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+
 `
