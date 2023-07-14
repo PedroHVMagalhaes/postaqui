@@ -4,9 +4,10 @@ import { z } from 'zod';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Wrapper } from './styles';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
-import { dadosOrigem, dadosOrigemRecipient } from '../../store/store';
+import { dadosOrigemRecipient } from '../../store/store';
+import { getCepData } from '../../services/viacep';
 
 // Definindo o schema de validação usando Zod
 const schema = z.object({
@@ -50,7 +51,6 @@ type FormValuesRecipient = {
 };
 
 const RecipientDataForm = () => {
-  let [dadosOrigemHook, setDadosOrigemHook] = useAtom(dadosOrigem);
   let [dadosOrigemHookRecipient, setDadosOrigemHookRecipient] =
     useAtom(dadosOrigemRecipient);
   const navigate = useNavigate();
@@ -66,6 +66,26 @@ const RecipientDataForm = () => {
     console.log(data);
     setDadosOrigemHookRecipient(data);
     navigate('/pacote');
+  };
+
+  const changeCep = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
+  ) => {
+    const { value } = event.target;
+
+    if (value.length !== 8) {
+      return;
+    }
+
+    getCepData(value).then((response) => {
+      setDadosOrigemHookRecipient({
+        ...(dadosOrigemHookRecipient as any),
+        bairro: response.data.bairro,
+        rua: response.data.logradouro,
+        cidade: response.data.localidade,
+        estado: response.data.uf,
+      });
+    });
   };
 
   return (
@@ -124,13 +144,14 @@ const RecipientDataForm = () => {
             error={!!errors.cep}
             helperText={errors.cep?.message}
             {...register('cep')}
-          />
+            onChange={changeCep}
+          ></TextField>
           <TextField
             size="small"
             required
             id="estado"
             label="Estado"
-            defaultValue={dadosOrigemHookRecipient?.estado || ''}
+            value={dadosOrigemHookRecipient?.estado || ''}
             error={!!errors.estado}
             helperText={errors.estado?.message}
             {...register('estado')}
@@ -140,7 +161,7 @@ const RecipientDataForm = () => {
             required
             id="cidade"
             label="Cidade"
-            defaultValue={dadosOrigemHookRecipient?.cidade || ''}
+            value={dadosOrigemHookRecipient?.cidade || ''}
             error={!!errors.cidade}
             helperText={errors.cidade?.message}
             {...register('cidade')}

@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { dadosOrigem, dadosOrigemRecipient } from '../../store/store';
+import { dadosOrigem } from '../../store/store';
 import { Container } from './styles';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ interface dadosOrigem {
 }
 
 const CardDataSender = () => {
-  let [dadosOrigemHook, setDadosOrigemHook] = useAtom(dadosOrigem);
+  let [dadosOrigemHook] = useAtom(dadosOrigem);
   return (
     <Container>
       <Link to={'/'}>
