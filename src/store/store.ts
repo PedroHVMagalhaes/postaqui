@@ -1,10 +1,12 @@
 import { atom } from 'jotai';
 
+// Definição do tipo Tracking
 type Tracking = {
   id: string;
   carrier: string;
 }
 
+// Definição do tipo FormValues para os dados de origem
 type FormValues = {
   nomeCompleto: string;
   cpf: string;
@@ -19,6 +21,7 @@ type FormValues = {
   complemento?: string;
 };
 
+// Definição do tipo FormValuesRecipient para os dados do destinatário
 type FormValuesRecipient = {
   nomeCompleto: string;
   cpf: string;
@@ -33,6 +36,7 @@ type FormValuesRecipient = {
   complemento?: string;
 };
 
+// Definição do tipo FormValuesShipping para os dados de envio
 type FormValuesShipping = {
   peso: number;
   altura: number;
@@ -46,10 +50,17 @@ type FormValuesShipping = {
   descriçaoItens: string;
 }
 
+// Criação do estado global 'tracking' para o objeto Tracking
 export let tracking = atom<Tracking | null>(null);
+
+// Criação do estado global 'dadosOrigem' para o objeto FormValues
 export let dadosOrigem = atom<FormValues | null>(null);
+
+// Criação do estado global 'dadosOrigemRecipient' para o objeto FormValuesRecipient
 export let dadosOrigemRecipient = atom<FormValuesRecipient | null>(null);
-export let dadosOrigemShipping = atom<FormValuesShipping >({
+
+// Criação do estado global 'dadosOrigemShipping' para o objeto FormValuesShipping
+export let dadosOrigemShipping = atom<FormValuesShipping>({
   peso: 0,
   altura: 0,
   largura: 0,
@@ -59,4 +70,5 @@ export let dadosOrigemShipping = atom<FormValuesShipping >({
   maosProprias: false,
   valorMercadoria: 0,
   quantidadeItens: 0,
-  descriçaoItens: ''});
+  descriçaoItens: ''
+});
