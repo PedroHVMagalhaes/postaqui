@@ -96,6 +96,7 @@ const ShippingPackageForm = () => {
       );
     }
   };
+  // Funções de manipulação de mudança dos switches
   const handleChangeReversa = () => {
     setDadosOrigemHookShipping((prev) => {
       const novoDadosReversa = {
